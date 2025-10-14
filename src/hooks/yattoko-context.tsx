@@ -141,15 +141,17 @@ export function YattokoProvider({ children }: { children: ReactNode }) {
 
   const toggleTaskStatus = (id: string) => {
     setState((prev) => {
-      const tasks = prev.tasks.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              status: task.status === 'done' ? 'pending' : 'done',
-              completed_at: task.status === 'done' ? undefined : new Date().toISOString()
-            }
-          : task
-      );
+      const tasks = prev.tasks.map((task) => {
+        if (task.id === id) {
+          const newStatus: 'pending' | 'done' = task.status === 'done' ? 'pending' : 'done';
+          return {
+            ...task,
+            status: newStatus,
+            completed_at: task.status === 'done' ? undefined : new Date().toISOString()
+          };
+        }
+        return task;
+      });
       return { ...prev, tasks };
     });
   };

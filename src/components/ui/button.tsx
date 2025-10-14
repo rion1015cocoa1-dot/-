@@ -20,9 +20,12 @@ const buttonVariants = cva(
   }
 );
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {}
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
+  size?: 'sm' | 'md';
+}
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant, ...props }, ref) => (
-  <button ref={ref} className={cn(buttonVariants({ variant, className }))} {...props} />
-));
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ className, variant, size = 'md', ...props }, ref) => {
+  const sizeClasses = size === 'sm' ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm';
+  return <button ref={ref} className={cn(buttonVariants({ variant }), sizeClasses, className)} {...props} />;
+});
 Button.displayName = 'Button';

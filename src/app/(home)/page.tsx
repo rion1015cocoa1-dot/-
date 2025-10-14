@@ -10,6 +10,8 @@ import { SettingsPanel } from '@/components/settings/settings-panel';
 import { Button } from '@/components/ui/button';
 import { deriveGoalSuggestions } from '@/utils/suggestions';
 import { OfflineIndicator } from '@/components/ui/offline-indicator';
+import { AISuggestionsSection } from '@/components/ai/ai-suggestions-section';
+import { AISuggestion } from '@/models/types';
 
 const tabs = ['今日', 'ゴール', 'タイムライン', '設定'] as const;
 
@@ -36,6 +38,12 @@ export default function HomePage() {
   const suggestions = useMemo(() => deriveGoalSuggestions(tasks), [tasks]);
 
   const completedTasks = useMemo(() => tasks.filter((task) => task.status === 'done'), [tasks]);
+
+  const handleAcceptAISuggestion = (suggestion: AISuggestion) => {
+    console.log('AI suggestion accepted:', suggestion);
+    // 提案のタイプに応じた処理を実装
+    // 将来的にはゴール作成や習慣追加のダイアログを開くなど
+  };
 
   const goalNudges = useMemo(() => {
     if (user.plan === 'free') {
@@ -103,9 +111,10 @@ export default function HomePage() {
               <br />未リンクのタスクはあと{goalNudges.task}件追加できます。
             </div>
           )}
+          <AISuggestionsSection tasks={tasks} goals={goals} onAcceptSuggestion={handleAcceptAISuggestion} />
           {suggestions.map((suggestion) => (
             <div key={suggestion.message} className="rounded-3xl bg-white/80 p-4 shadow-sm">
-              <p className="text-sm font-semibold text-rose-600">スマート提案</p>
+              <p className="text-sm font-semibold text-rose-600">ルールベース提案</p>
               <p className="mt-1 text-sm text-slate-600">{suggestion.message}</p>
               <div className="mt-3 flex gap-2">
                 <Button>あとで考える</Button>
