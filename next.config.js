@@ -8,8 +8,7 @@ const withPWA = require('next-pwa')({
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    typedRoutes: true,
-    serverActions: true
+    typedRoutes: true
   },
   images: {
     remotePatterns: []
